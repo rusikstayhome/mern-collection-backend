@@ -127,3 +127,37 @@ export const getAll = async (req, res) => {
     }
 }
 
+export const update = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await UserModel.findById(userId)
+
+        await UserModel.updateOne({
+            _id: userId,
+        }, {
+            roles: req.body.roles
+        })
+
+        const token = jwt.sign({
+            _id: user._id,
+            roles: user.roles.map(role => role)
+        },
+            'ilovenika',
+            {
+                expiresIn: '30d'
+            })
+
+        const { passwordHash, ...userData } = user._doc;
+
+        res.json({
+            ...userData,
+            token
+        })
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            message: 'Не удалось обновить статью'
+        })
+    }
+}
+

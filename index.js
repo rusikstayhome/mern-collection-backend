@@ -12,8 +12,8 @@ import { registerValidation } from './validations.js'
 import UserModel from './models/User.js';
 import RoleModel from './models/Role.js';
 
-import checkAuth from './middleWare/checkAuth.js'
-import checkRole from './middleWare/checkRole.js'
+import checkAuth from './middlewares/checkAuth.js'
+import checkRole from './middlewares/checkRole.js'
 
 import * as UserController from './controllers/UserController.js'
 
@@ -30,6 +30,7 @@ app.post('/auth/register', registerValidation, UserController.register)
 app.post('/auth/login', UserController.login)
 app.get('/auth/me', checkAuth, UserController.getMe)
 app.get('/users', checkRole, UserController.getAll)
+app.patch('/users/:id', checkRole, UserController.update)
 
 app.listen(3001, (err) => {
     if (err) {
