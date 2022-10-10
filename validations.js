@@ -1,7 +1,7 @@
 import { body } from 'express-validator';
 
 export const loginValidation = [
-    body('email', 'Invalid mail format'),
+    body('username', 'Invalid username'),
     body('password', 'Password must be at least 5 characters').isLength({ min: 5 }),
 ];
 
@@ -12,10 +12,10 @@ export const registerValidation = [
     // body('avatarUrl', 'Неверная ссылка на аватарку').optional().isURL(),
 ];
 
-export const postCreateValidation = [
-    body('title', 'Введите заголовок статьи').isLength({ min: 3 }).isString(),
-    body('text', 'Введите текс статьи').isLength({ min: 3 }).isString(),
-    body('tags', 'Неверный формат тэгов(укажите массив)').optional().isString(),
-    body('imageUrl', 'Неверная ссылка на изображение').optional().isString(),
+export const collectionCreateValidation = [
+    body('title', 'Enter a title for the collection').isLength({ min: 3 }).isString(),
+    body('description', 'Enter a description for the collection').isLength({ min: 3 }).isString(),
+    body('tags', 'Wrong tag format').optional().isString(),
+    body('imageUrl', 'Invalid image link').optional().isString(),
 ];
 
