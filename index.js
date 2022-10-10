@@ -18,7 +18,7 @@ import checkRole from './middlewares/checkRole.js'
 import * as UserController from './controllers/UserController.js'
 
 
-mongoose.connect(`mongodb+srv://admin:${process.env.DB_PASS}@cluster0.bffceli.mongodb.net/collection?retryWrites=true&w=majority`)
+mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('DB ok'))
     .catch((err) => console.log('DB error', err))
 
@@ -32,7 +32,7 @@ app.get('/auth/me', checkAuth, UserController.getMe)
 app.get('/users', checkRole, UserController.getAll)
 app.patch('/users/:id', checkRole, UserController.update)
 
-app.listen(3001, (err) => {
+app.listen(process.env.PORT || 3001, (err) => {
     if (err) {
         return console.log(err)
     }
