@@ -108,6 +108,7 @@ export const update = async (req, res) => {
         })
     }
 }
+
 export const addItem = async (req, res) => {
     try {
         const collectionId = req.params.id;
@@ -115,10 +116,10 @@ export const addItem = async (req, res) => {
         const doc = new ItemModel({
             name: req.body.name,
             tags: req.body.tags,
+            imageUrl: req.body.imageUrl,
             user: req.userId,
             parentCollection: collectionId
         })
-        console.log(req)
         const item = await doc.save()
 
         const collection = await CollectionModel.findById(collectionId);
@@ -135,4 +136,92 @@ export const addItem = async (req, res) => {
         })
     }
 
+}
+export const getAllItems = async (req, res) => {
+    try {
+        const items = await ItemModel.find().populate('user').populate('parentCollection').exec();
+
+        res.json(items)
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Failed to get the items'
+        })
+    }
+}
+export const getOneItem = async (req, res) => {
+    try {
+        const itemId = req.params.item;
+
+        const oneItem = await ItemModel.findById(itemId).populate('user').populate('parentCollection').exec();
+
+        if (!oneItem) {
+            console.log(err);
+            return res.status(404).json({
+                message: 'Failed to get the item'
+            })
+        }
+
+        res.json(oneItem)
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Failed to get the item'
+        })
+    }
+}
+export const removeItem = async (req, res) => {
+    try {
+        const itemId = req.params.item;
+
+        ItemModel.findOneAndDelete({
+            _id: itemId,
+        }, (err, doc) => {
+            if (err) {
+                console.log(err);
+                res.status(500).json({
+                    message: 'Failed to delete the item'
+                })
+            }
+
+            if (!doc) {
+                console.log(err);
+                res.status(500).json({
+                    message: 'Failed to get the item'
+                })
+            }
+
+            res.json({
+                success: true,
+            })
+        })
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Failed to delete the item.'
+        })
+    }
+}
+export const updateItem = async (req, res) => {
+    try {
+        const itemId = req.params.item;
+
+        await ItemModel.updateOne({
+            _id: itemId,
+        }, {
+            name: req.body.name,
+            tags: req.body.tags,
+            imageUrl: req.body.imageUrl,
+        })
+
+        res.json({
+            success: true,
+        })
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Failed to update the item'
+        })
+    }
 }

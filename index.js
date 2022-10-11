@@ -33,13 +33,11 @@ app.get('/collections/:id', CollectionController.getOne)
 app.delete('/collections/:id', checkAuth, CollectionController.remove)
 app.patch('/collections/:id', collectionCreateValidation, checkAuth, CollectionController.update)
 
-
-
-
-
-
-
 app.post('/collections/:id/items', checkAuth, CollectionController.addItem)
+app.get('/collections/:id/items', CollectionController.getAllItems)
+app.get('/collections/:id/items/:item', CollectionController.getOneItem)
+app.delete('/collections/:id/items/:item', checkAuth, CollectionController.removeItem)
+app.patch('/collections/:id/items/:item', checkAuth, CollectionController.updateItem)
 
 app.listen(process.env.PORT || 3001, (err) => {
     if (err) {
