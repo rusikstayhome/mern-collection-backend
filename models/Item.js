@@ -18,6 +18,11 @@ const ItemSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    parentCollection: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Collection',
+        // required: true
+    },
     ImageUrl: String,
 }, {
     timestamps: true
