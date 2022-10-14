@@ -3,6 +3,7 @@ dotenv.config()
 
 import express from "express";
 import mongoose from "mongoose";
+import cors from 'cors'
 
 import { registerValidation, collectionCreateValidation, loginValidation } from './validations.js'
 
@@ -20,6 +21,7 @@ mongoose.connect(process.env.MONGODB_URI)
 const app = express();
 
 app.use(express.json());
+app.use(cors())
 
 app.post('/auth/register', registerValidation, UserController.register)
 app.post('/auth/login', loginValidation, UserController.login)
@@ -28,6 +30,7 @@ app.get('/users', checkRole, UserController.getAll)
 app.patch('/users/:id', checkRole, UserController.update)
 
 app.post('/collections', collectionCreateValidation, checkAuth, CollectionController.create)
+// app.get('/collections/items', CollectionController.getLastItems)
 app.get('/collections', CollectionController.getAll)
 app.get('/collections/:id', CollectionController.getOne)
 app.delete('/collections/:id', checkAuth, CollectionController.remove)

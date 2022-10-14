@@ -139,9 +139,13 @@ export const addItem = async (req, res) => {
 }
 export const getAllItems = async (req, res) => {
     try {
-        const items = await ItemModel.find().populate('user').populate('parentCollection').exec();
+        const collectionId = req.params.id;
+
+        const items = await ItemModel.find().populate('user').exec();
+
 
         res.json(items)
+
 
     } catch (err) {
         console.log(err);
@@ -225,3 +229,4 @@ export const updateItem = async (req, res) => {
         })
     }
 }
+// export const getLastItems
