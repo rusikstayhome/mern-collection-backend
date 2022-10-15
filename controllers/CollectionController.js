@@ -20,6 +20,21 @@ export const create = async (req, res) => {
         })
     }
 }
+export const getLastTags = async (req, res) => {
+    try {
+        const collections = await CollectionModel.find().limit(5).populate('items').exec();
+
+        const items = collections.map(obj => obj.items).flat();
+        const tags = items.map(obj => obj.tags)
+
+        res.json(tags)
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Failed to get the collections'
+        })
+    }
+}
 export const getAll = async (req, res) => {
     try {
         const collections = await CollectionModel.find().populate('user').populate('items').exec();
@@ -137,11 +152,15 @@ export const addItem = async (req, res) => {
     }
 
 }
-export const getAllItems = async (req, res) => {
+export const getAllItemsInCollection = async (req, res) => {
     try {
         const collectionId = req.params.id;
 
-        const items = await ItemModel.find().populate('user').exec();
+        const collection = await CollectionModel.findById(collectionId).populate('user').populate('items').exec()
+
+        const items = collection.items.map(item => item)
+
+        // const items = await ItemModel.find().populate('user').exec();
 
 
         res.json(items)
