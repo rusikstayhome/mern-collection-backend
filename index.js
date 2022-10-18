@@ -5,6 +5,10 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from 'cors'
 
+import multer from 'multer'
+import { storage } from './storage/storage.js';
+
+
 import { registerValidation, collectionCreateValidation, loginValidation } from './validations.js'
 
 import checkAuth from './middlewares/checkAuth.js'
@@ -19,9 +23,16 @@ mongoose.connect(process.env.MONGODB_URI)
     .catch((err) => console.log('DB error', err))
 
 const app = express();
-
 app.use(express.json());
 app.use(cors())
+
+
+const upload = multer({ storage: storage })
+
+app.post("/upload", upload.single("image"), async (req, res) => {
+    return res.json({ image: req.file.path });
+});
+
 
 app.post('/auth/register', registerValidation, UserController.register)
 app.post('/auth/login', loginValidation, UserController.login)
@@ -30,7 +41,8 @@ app.get('/users', checkRole, UserController.getAll)
 app.patch('/users/:id', checkRole, UserController.update)
 
 app.post('/collections', collectionCreateValidation, checkAuth, CollectionController.create)
-app.get('/collections/tags', CollectionController.getLastTags)
+app.get('/tags', CollectionController.getLastTags)
+app.get('/items', CollectionController.getLastItems)
 app.get('/collections', CollectionController.getAll)
 app.get('/collections/:id', CollectionController.getOne)
 app.delete('/collections/:id', checkAuth, CollectionController.remove)

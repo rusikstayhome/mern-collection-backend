@@ -25,9 +25,23 @@ export const getLastTags = async (req, res) => {
         const collections = await CollectionModel.find().limit(5).populate('items').exec();
 
         const items = collections.map(obj => obj.items).flat();
-        const tags = items.map(obj => obj.tags)
+        const tags = items.map(obj => obj.tags).flat();
 
         res.json(tags)
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Failed to get the collections'
+        })
+    }
+}
+export const getLastItems = async (req, res) => {
+    try {
+        const collections = await CollectionModel.find().populate('items').exec();
+
+        const items = collections.map(obj => obj.items).flat();
+
+        res.json(items)
     } catch (err) {
         console.log(err);
         res.status(500).json({
@@ -130,7 +144,7 @@ export const addItem = async (req, res) => {
 
         const doc = new ItemModel({
             name: req.body.name,
-            tags: req.body.tags,
+            tags: req.body.tags.split(','),
             imageUrl: req.body.imageUrl,
             user: req.userId,
             parentCollection: collectionId
