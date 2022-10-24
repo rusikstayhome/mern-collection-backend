@@ -21,7 +21,7 @@ const ItemSchema = new mongoose.Schema({
     parentCollection: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Collection',
-        // required: true
+        required: true
     },
     numberAttributes: {
         type: Map,

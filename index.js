@@ -53,7 +53,7 @@ app.post('/collections/:id/items', checkAuth, CollectionController.addItem)
 app.get('/collections/:id/items', CollectionController.getAllItemsInCollection)
 app.get('/collections/:id/items/:item', CollectionController.getOneItem)
 app.patch('/collections/:id/items/:item', checkAuth, CollectionController.updateItem)
-app.delete('/collections/:id/items/:item', checkAuth, CollectionController.removeItem)
+app.delete('/items/:item', checkAuth, CollectionController.removeItem)
 
 app.listen(process.env.PORT || 3001, (err) => {
     if (err) {
