@@ -23,6 +23,22 @@ const ItemSchema = new mongoose.Schema({
         ref: 'Collection',
         // required: true
     },
+    numberAttributes: {
+        type: Map,
+        of: Number,
+    },
+    dateAttributes: {
+        type: Map,
+        of: Date,
+    },
+    stringAttributes: {
+        type: Map,
+        of: String,
+    },
+    textAttributes: {
+        type: Map,
+        of: String,
+    },
     ImageUrl: String,
 }, {
     timestamps: true

@@ -38,6 +38,7 @@ app.post('/auth/register', registerValidation, UserController.register)
 app.post('/auth/login', loginValidation, UserController.login)
 app.get('/auth/me', checkAuth, UserController.getMe)
 app.get('/users', checkRole, UserController.getAll)
+app.get('/users/:id', UserController.getOne)
 app.patch('/users/:id', checkRole, UserController.update)
 
 app.post('/collections', collectionCreateValidation, checkAuth, CollectionController.create)
@@ -51,8 +52,8 @@ app.patch('/collections/:id', collectionCreateValidation, checkAuth, CollectionC
 app.post('/collections/:id/items', checkAuth, CollectionController.addItem)
 app.get('/collections/:id/items', CollectionController.getAllItemsInCollection)
 app.get('/collections/:id/items/:item', CollectionController.getOneItem)
-app.delete('/collections/:id/items/:item', checkAuth, CollectionController.removeItem)
 app.patch('/collections/:id/items/:item', checkAuth, CollectionController.updateItem)
+app.delete('/collections/:id/items/:item', checkAuth, CollectionController.removeItem)
 
 app.listen(process.env.PORT || 3001, (err) => {
     if (err) {

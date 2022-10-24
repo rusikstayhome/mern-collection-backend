@@ -156,8 +156,23 @@ export const update = async (req, res) => {
     } catch (err) {
         console.log(err)
         res.status(500).json({
-            message: 'Не удалось обновить статью'
+            message: 'Failed to update the role'
         })
     }
 }
 
+export const getOne = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await UserModel.findById(userId)
+
+        res.json({
+            user
+        })
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            message: 'Failed to find the user'
+        })
+    }
+}

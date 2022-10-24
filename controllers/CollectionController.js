@@ -37,7 +37,7 @@ export const getLastTags = async (req, res) => {
 }
 export const getLastItems = async (req, res) => {
     try {
-        const collections = await CollectionModel.find().populate('items').exec();
+        const collections = await CollectionModel.find().populate('items').populate('user').exec();
 
         const items = collections.map(obj => obj.items).flat();
 
@@ -147,7 +147,8 @@ export const addItem = async (req, res) => {
             tags: req.body.tags.split(','),
             imageUrl: req.body.imageUrl,
             user: req.userId,
-            parentCollection: collectionId
+            parentCollection: collectionId,
+            numberAttributes: req.body.numberAttributes,
         })
         const item = await doc.save()
 
@@ -217,19 +218,19 @@ export const removeItem = async (req, res) => {
         }, (err, doc) => {
             if (err) {
                 console.log(err);
-                res.status(500).json({
+                return res.status(500).json({
                     message: 'Failed to delete the item'
                 })
             }
 
             if (!doc) {
                 console.log(err);
-                res.status(500).json({
+                return res.status(500).json({
                     message: 'Failed to get the item'
                 })
             }
 
-            res.json({
+            return res.json({
                 success: true,
             })
         })
@@ -262,4 +263,4 @@ export const updateItem = async (req, res) => {
         })
     }
 }
-// export const getLastItems
+
