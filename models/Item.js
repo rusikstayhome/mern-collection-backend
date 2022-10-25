@@ -9,10 +9,10 @@ const ItemSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
-    likes: {
-        type: Number,
-        default: 0,
-    },
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }],
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -23,6 +23,7 @@ const ItemSchema = new mongoose.Schema({
         ref: 'Collection',
         required: true
     },
+    imageUrl: String,
     numberAttributes: {
         type: Map,
         of: Number,
@@ -39,7 +40,6 @@ const ItemSchema = new mongoose.Schema({
         type: Map,
         of: String,
     },
-    ImageUrl: String,
 }, {
     timestamps: true
 })

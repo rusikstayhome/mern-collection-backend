@@ -54,6 +54,8 @@ app.get('/collections/:id/items', CollectionController.getAllItemsInCollection)
 app.get('/collections/:id/items/:item', CollectionController.getOneItem)
 app.patch('/collections/:id/items/:item', checkAuth, CollectionController.updateItem)
 app.delete('/items/:item', checkAuth, CollectionController.removeItem)
+app.post('/items/:item', checkAuth, CollectionController.likeItem)
+
 
 app.listen(process.env.PORT || 3001, (err) => {
     if (err) {

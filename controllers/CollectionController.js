@@ -1,5 +1,6 @@
 import CollectionModel from '../models/Collection.js';
-import ItemModel from '../models/Item.js'
+import ItemModel from '../models/Item.js';
+import UserModel from '../models/User.js'
 
 export const create = async (req, res) => {
     try {
@@ -263,4 +264,52 @@ export const updateItem = async (req, res) => {
         })
     }
 }
+export const likeItem = async (req, res) => {
+    try {
+        const itemId = req.params.item;
 
+        const item = await ItemModel.findById(itemId).populate('user');
+        const user = await UserModel.findById(req.userId)
+
+        if (item.likes.includes(user._id)) {
+            item.likes = item.likes.filter((obj) => obj.toString() !== (user._id).toString())
+            await item.save()
+            res.json(item)
+        } else {
+            item.likes.push(user)
+            await item.save()
+            res.json(item.likes)
+        }
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Failed to like the item'
+        })
+    }
+}
+export const unlikeItem = async (req, res) => {
+    try {
+        const itemId = req.params.item;
+
+        const item = await ItemModel.findById(itemId);
+        const user = await UserModel.findById(req.userId)
+
+        if (item.likes && item.likes.includes(user._id)) {
+            item.likes.filter(obj => obj !== req.userId)
+            await item.save()
+            res.json(item)
+        } else {
+            console.log(err);
+            res.status(500).json({
+                message: 'Failed to unlike the item'
+            })
+        }
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Failed to like the item'
+        })
+    }
+}
