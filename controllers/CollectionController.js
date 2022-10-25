@@ -288,28 +288,3 @@ export const likeItem = async (req, res) => {
         })
     }
 }
-export const unlikeItem = async (req, res) => {
-    try {
-        const itemId = req.params.item;
-
-        const item = await ItemModel.findById(itemId);
-        const user = await UserModel.findById(req.userId)
-
-        if (item.likes && item.likes.includes(user._id)) {
-            item.likes.filter(obj => obj !== req.userId)
-            await item.save()
-            res.json(item)
-        } else {
-            console.log(err);
-            res.status(500).json({
-                message: 'Failed to unlike the item'
-            })
-        }
-
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({
-            message: 'Failed to like the item'
-        })
-    }
-}
