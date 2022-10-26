@@ -250,7 +250,7 @@ export const updateItem = async (req, res) => {
             _id: itemId,
         }, {
             name: req.body.name,
-            tags: req.body.tags,
+            tags: req.body.tags.split(','),
             imageUrl: req.body.imageUrl,
         })
 
