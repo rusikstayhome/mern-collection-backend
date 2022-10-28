@@ -38,7 +38,7 @@ export const getLastTags = async (req, res) => {
 }
 export const getLastItems = async (req, res) => {
     try {
-        const collections = await CollectionModel.find().populate('items').populate('user').exec();
+        const collections = await CollectionModel.find().sort({ createdAt: -1 }).populate('items').populate('user').exec();
 
         const items = collections.map(obj => obj.items).flat();
 
@@ -52,7 +52,7 @@ export const getLastItems = async (req, res) => {
 }
 export const getAll = async (req, res) => {
     try {
-        const collections = await CollectionModel.find().populate('user').populate('items').exec();
+        const collections = await CollectionModel.find().sort({ viewsCount: -1 }).populate('user').populate('items').exec();
 
         res.json(collections)
     } catch (err) {
@@ -67,6 +67,9 @@ export const getOne = async (req, res) => {
         const collectionId = req.params.id;
 
         const collection = await CollectionModel.findById(collectionId).populate('user').populate('items').exec()
+
+        collection.viewsCount += 1
+        collection.save()
 
         if (!collection) {
             console.log(err);
@@ -285,6 +288,31 @@ export const likeItem = async (req, res) => {
         console.log(err);
         res.status(500).json({
             message: 'Failed to like the item'
+        })
+    }
+}
+export const addComment = async (req, res) => {
+    try {
+        const itemId = req.params.item;
+
+        const item = await ItemModel.findById(itemId).populate('user');
+        const user = await UserModel.findById(req.userId);
+
+        const comment = {
+            user: {
+                username: user.username,
+                _id: user._id
+            },
+            text: req.body.text
+        }
+
+        item.comments.push(comment)
+        await item.save()
+        res.json(item)
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Failed to comment the item'
         })
     }
 }

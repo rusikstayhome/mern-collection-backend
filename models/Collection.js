@@ -19,6 +19,10 @@ const CollectionSchema = new mongoose.Schema(
             ref: 'User',
             required: true
         },
+        viewsCount: {
+            type: Number,
+            default: 0,
+        },
         imageUrl: String,
         items: [{
             type: mongoose.Schema.Types.ObjectId,

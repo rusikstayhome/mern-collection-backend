@@ -19,6 +19,22 @@ const ItemSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    comments: [{
+        user: {
+            type: {},
+            required: true
+        },
+        text: {
+            type: String,
+            required: true,
+        },
+        addedAt: {
+            type: Date,
+            required: true,
+            default: Date.now()
+        }
+
+    }],
     parentCollection: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Collection',
