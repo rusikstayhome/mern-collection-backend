@@ -61,4 +61,6 @@ const ItemSchema = new mongoose.Schema({
     timestamps: true
 })
 
+ItemSchema.index({ "$**": "text" });
+
 export default mongoose.model('Item', ItemSchema)

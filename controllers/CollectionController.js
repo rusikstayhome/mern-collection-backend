@@ -316,3 +316,32 @@ export const addComment = async (req, res) => {
         })
     }
 }
+export const deleteComment = async (req, res) => {
+    try {
+        const itemId = req.params.item;
+        const commentId = req.params.comment;
+
+        const item = await ItemModel.findById(itemId)
+
+        item.comments = item.comments.filter(obj => (obj._id).toString() !== commentId.toString())
+        await item.save()
+        res.json(item.comments)
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Failed to delete the item'
+        })
+    }
+}
+export const findItems = async (req, res) => {
+    try {
+        const items = await ItemModel.find({ $text: { $search: req.body.text } }).populate('user').populate('parentCollection').exec()
+
+        res.json(items)
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Failed to find the item'
+        })
+    }
+}

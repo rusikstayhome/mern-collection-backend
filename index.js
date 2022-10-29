@@ -44,6 +44,7 @@ app.patch('/users/:id', checkRole, UserController.update)
 app.post('/collections', collectionCreateValidation, checkAuth, CollectionController.create)
 app.get('/tags', CollectionController.getLastTags)
 app.get('/items', CollectionController.getLastItems)
+app.post('/items/search', CollectionController.findItems)
 app.get('/collections', CollectionController.getAll)
 app.get('/collections/:id', CollectionController.getOne)
 app.delete('/collections/:id', checkAuth, CollectionController.remove)
@@ -56,6 +57,7 @@ app.patch('/collections/:id/items/:item', checkAuth, CollectionController.update
 app.delete('/items/:item', checkAuth, CollectionController.removeItem)
 app.post('/items/:item', checkAuth, CollectionController.likeItem)
 app.post('/items/:item/comments', checkAuth, CollectionController.addComment)
+app.delete('/items/:item/comments/:comment', checkAuth, CollectionController.deleteComment)
 
 
 app.listen(process.env.PORT || 3001, (err) => {
