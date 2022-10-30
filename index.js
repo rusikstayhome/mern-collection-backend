@@ -49,6 +49,7 @@ app.get('/collections', CollectionController.getAll)
 app.get('/collections/:id', CollectionController.getOne)
 app.delete('/collections/:id', checkAuth, CollectionController.remove)
 app.patch('/collections/:id', collectionCreateValidation, checkAuth, CollectionController.update)
+app.patch('/collections/:id/attributes', checkAuth, CollectionController.updateAttributes)
 
 app.post('/collections/:id/items', checkAuth, CollectionController.addItem)
 app.get('/collections/:id/items', CollectionController.getAllItemsInCollection)

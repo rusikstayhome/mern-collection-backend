@@ -141,6 +141,31 @@ export const update = async (req, res) => {
         })
     }
 }
+export const updateAttributes = async (req, res) => {
+    try {
+        const collectionId = req.params.id;
+
+        await CollectionModel.updateOne({
+            _id: collectionId,
+        }, {
+            customFields:
+            {
+                stringAttributes: req.body.stringFields,
+                numberAttributes: req.body.numberFields,
+                dateAttributes: req.body.dateFields,
+                textAttributes: req.body.textFields,
+            }
+        })
+        res.json({
+            success: true,
+        })
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Failed to update the collection'
+        })
+    }
+}
 
 export const addItem = async (req, res) => {
     try {
@@ -152,7 +177,11 @@ export const addItem = async (req, res) => {
             imageUrl: req.body.imageUrl,
             user: req.userId,
             parentCollection: collectionId,
-            numberAttributes: req.body.numberAttributes,
+            stringAttributes: req.body.stringFields,
+            numberAttributes: req.body.numberFields,
+            dateAttributes: req.body.dateFields,
+            textAttributes: req.body.textFields,
+
         })
         const item = await doc.save()
 

@@ -19,6 +19,13 @@ const CollectionSchema = new mongoose.Schema(
             ref: 'User',
             required: true
         },
+        customFields: [{
+            stringAttributes: { type: Array },
+            numberAttributes: { type: Array },
+            dateAttributes: { type: Array },
+            textAttributes: { type: Array },
+
+        }],
         viewsCount: {
             type: Number,
             default: 0,

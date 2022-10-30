@@ -41,22 +41,22 @@ const ItemSchema = new mongoose.Schema({
         required: true
     },
     imageUrl: String,
-    numberAttributes: {
+    numberAttributes: [{
         type: Map,
-        of: Number,
-    },
-    dateAttributes: {
+        // of: Number,
+    }],
+    dateAttributes: [{
         type: Map,
-        of: Date,
-    },
-    stringAttributes: {
+        // of: Date,
+    }],
+    stringAttributes: [{
         type: Map,
-        of: String,
-    },
-    textAttributes: {
+        // of: String,
+    }],
+    textAttributes: [{
         type: Map,
-        of: String,
-    },
+        // of: String,
+    }],
 }, {
     timestamps: true
 })
